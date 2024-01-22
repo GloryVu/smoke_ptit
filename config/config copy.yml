@@ -1,0 +1,89 @@
+mqtt:
+  host: mqtt
+
+
+# Optional: model modifications
+model:
+  # Optional: path to the model (default: automatic based on detector)
+  path: /home/iec-ptit/Desktop/vvinh/frigate_dev/frigate-0.12.0/config/ssdlite_mobiledet_smoke_4_1_2023.tflite #12_ssdlite_mobiledet_smoke_v2_1n.tflite
+  
+  # path: /config/ssdlite_mobiledet_house.tflite #/config/ssdlite_mobiledet_smoke.tflite
+  # Optional: path to the labelmap (default: shown below)
+  labelmap_path: /home/iec-ptit/Desktop/vvinh/frigate_dev/frigate-0.12.0/config/labels_smoke.txt
+  # labelmap_path: /config/labels_house.txt #/config/labels_smoke.txt
+  # Required: Object detection model input width (default: shown below)
+  width: 320
+  # Required: Object detection model input height (default: shown below)
+  height: 320
+  # Optional: Label name modifications. These are merged into the standard labelmap.
+  labelmap:
+    0: smoke
+    1: notsmoke
+
+cameras:
+  ##############################################################################
+  camera_10_1_20_28:
+    ffmpeg:
+      inputs:
+        # - path: /media/frigate/smoke_test.mp4
+        - path: /home/iec-ptit/Desktop/vvinh/frigate_dev/frigate-0.12.0//debug/smoke_test.mp4
+          input_args: -re -stream_loop -1 -fflags +genpts
+          roles:
+            - detect
+            - rtmp
+
+    objects:
+      track:
+        - smoke
+        - notsmoke
+        # - foundationhouse
+        # - vacantland
+        # - other #thuan them
+      filters:
+        # foundationhouse:
+        #   # Optional: minimum width*height of the bounding box for the detected object. Vorher: 5000. Default 0
+        #   min_area: 0
+        #   # Optional: maximum width*height of the bounding box for the detected object (default: 24000000)
+        #   max_area: 100000
+        #   # Optional: minimum score for the object to initiate tracking (default: shown below)
+        #   min_score: 0.7
+        #   # Optional: minimum decimal percentage for tracked object's computed score to be considered a true positive (default: shown below)
+        #   threshold: 0.85
+        smoke:
+          # Optional: minimum width*height of the bounding box for the detected object. Vorher: 5000. Default 0
+          min_area: 0
+          # Optional: maximum width*height of the bounding box for the detected object (default: 24000000)
+          max_area: 100000
+          # Optional: minimum score for the object to initiate tracking (default: shown below)
+          min_score: 0.65
+          # Optional: minimum decimal percentage for tracked object's computed score to be considered a true positive (default: shown below)
+          threshold: 0.7
+        # vacantland:
+        #   # Optional: minimum width*height of the bounding box for the detected object. Vorher: 5000. Default 0
+        #   min_area: 0
+        #   # Optional: maximum width*height of the bounding box for the detected object (default: 24000000)
+        #   max_area: 100000
+        #   # Optional: minimum score for the object to initiate tracking (default: shown below)
+        #   min_score: 0.7
+        #   # Optional: minimum decimal percentage for tracked object's computed score to be considered a true positive (default: shown below)
+        #   threshold: 0.85
+        # other:
+        #   # Optional: minimum width*height of the bounding box for the detected object. Vorher: 5000. Default 0
+        #   min_area: 0
+        #   # Optional: maximum width*height of the bounding box for the detected object (default: 24000000)
+        #   max_area: 100000
+        #   # Optional: minimum score for the object to initiate tracking (default: shown below)
+        #   min_score: 0.7
+        #   # Optional: minimum decimal percentage for tracked object's computed score to be considered a true positive (default: shown below)
+        #   threshold: 0.85
+
+    snapshots:
+      enabled: True
+      quality: 50
+
+    detect:
+      width: 1920
+      height: 1080
+    rtmp:
+      enabled: False
+

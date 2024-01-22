@@ -1,0 +1,17 @@
+README.md
+docs/
+.gitignore
+debug
+config/
+*.pyc
+.git
+.debug/test_video
+core
+*.mp4
+*.jpg
+*.db
+*.ts
+
+web/dist/
+web/node_modules/
+web/.npm
